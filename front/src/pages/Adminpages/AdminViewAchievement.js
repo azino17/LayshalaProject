@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
 import { Table, Button, Modal, InputGroup, FormControl } from "react-bootstrap";
 
 const AdminViewAchievement = () => {
@@ -36,10 +35,10 @@ const AdminViewAchievement = () => {
     setShowModal(true); // Open the modal
   };
 
-  const handleCloseModal = () => {
-    setSelectedAchievement(null);
-    setShowModal(false);
-  };
+  // const handleCloseModal = () => {
+  //   setSelectedAchievement(null);
+  //   setShowModal(false);
+  // };
 
   // Filter achievements based on search query
   const filteredAchievements = achievements.filter((achievement) =>
@@ -80,7 +79,13 @@ const AdminViewAchievement = () => {
 
   return (
     <div className="container mt-4">
-      <h1 className="mb-4">Achievements</h1>
+     <div className="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h4>Achievements</h4>
+          <p className="text-muted">
+          "Student Achievements: Celebrating Excellence and Success 🎓🏆"</p>
+        </div>
+      </div>
       {/* Search Bar */}
       <InputGroup className="mb-3">
         <FormControl
@@ -89,79 +94,124 @@ const AdminViewAchievement = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </InputGroup>
+
       {/* Achievement Table */}
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Student Name</th>
-            <th>Event Name</th>
-            <th>Event Date</th>
-            <th>Rank</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredAchievements.map((achievement, index) => (
-            <tr key={achievement._id}>
-              <td>{index + 1}</td>
-              <td>{achievement.studentId?.studentName || "N/A"}</td>
-              <td>{achievement.eventName}</td>
-              <td>{new Date(achievement.eventDate).toLocaleDateString()}</td>
-              <td>{achievement.rank}</td>
-              <td>
-                <Button
-                  variant="info"
-                  size="sm"
-                  onClick={() => handleShowModal(achievement)}
-                >
-                  View Certificate
-                </Button>
-              </td>
+      <div className="table-responsive">
+        <Table
+          striped
+          bordered
+          hover
+          className="text-center"
+          style={{ fontFamily: "'Noto Sans', sans-serif" }}
+        >
+          <thead className="bg-primary text-white">
+            <tr>
+              <th>ID</th>
+              <th>Student Name</th>
+              <th>Event Name</th>
+              <th>Event Date</th>
+              <th>Rank</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {filteredAchievements.map((achievement, index) => {
+              const rowClass = achievement.rank === 1 ? "" : "";
+              return (
+                <tr key={achievement._id} className={rowClass}>
+                  <td>{index + 1}</td>
+                  <td>{achievement.studentId?.studentName || "N/A"}</td>
+                  <td>{achievement.eventName}</td>
+                  <td>
+                    {new Date(achievement.eventDate).toLocaleDateString()}
+                  </td>
+                  <td>{achievement.rank}</td>
+                  <td>
+                    <Button
+                      variant=""
+                      size="sm"
+                      onClick={() => handleShowModal(achievement)}
+                      className="btn w-100"
+                      style={{
+                        backgroundColor: "#FFA800",
+                        fontFamily: "'Noto Sans', sans-serif",
+                        color:"white"
+                      }}
+                      onMouseEnter={(e) => (e.target.style.color = "#800000")}
+                      onMouseLeave={(e) => (e.target.style.color = "white")}
+                    >
+                      <i className="bi bi-file-earmark-text me-1"></i> View
+                      Certificate
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </div>
+
       {/* Modal for Viewing Certificate */}
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Achievement Details</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {selectedAchievement && (
-            <div>
-              <p>
-                <strong>Student Name:</strong>{" "}
-                {selectedAchievement.studentId.studentName}
-              </p>
-              <p>
-                <strong>Event Name:</strong> {selectedAchievement.eventName}
-              </p>
-              <p>
-                <strong>Event Date:</strong>{" "}
-                {new Date(selectedAchievement.eventDate).toLocaleDateString()}
-              </p>
-              <p>
-                <strong>Rank:</strong> {selectedAchievement.rank}
-              </p>
-              <p>
-                <strong>Certificate:</strong>
-              </p>
-              <img
-                src={`data:image/jpeg;base64,${selectedAchievement.certificate}`}
-                alt="Certificate"
-                style={{ maxWidth: "100%", height: "auto" }}
-              />
-              <button
-                className="btn btn-primary mt-3"
-                onClick={() => downloadAchievementAsPDF(selectedAchievement)}
-              >
-                Download as PDF
-              </button>
-            </div>
-          )}
-        </Modal.Body>
-      </Modal>
+<Modal show={showModal} onHide={() => setShowModal(false)}>
+  <Modal.Header closeButton>
+    <Modal.Title>Achievement Details</Modal.Title>
+  </Modal.Header>
+  <Modal.Body
+    style={{ fontFamily: "'Noto Sans', sans-serif", textAlign: "left" }}
+  >
+    {selectedAchievement && (
+      <div>
+        <p>
+          <strong>Student Name:</strong> {selectedAchievement.studentId.studentName}
+        </p>
+        <p>
+          <strong>Event Name:</strong> {selectedAchievement.eventName}
+        </p>
+        <p>
+          <strong>Event Date:</strong>{" "}
+          {new Date(selectedAchievement.eventDate).toLocaleDateString()}
+        </p>
+        <p>
+          <strong>Rank:</strong> {selectedAchievement.rank}
+        </p>
+        <p>
+          <strong>Certificate:</strong>
+        </p>
+        <div style={{ textAlign: "center" }}>
+          <img
+            src={`data:image/jpeg;base64,${selectedAchievement.certificate}`}
+            alt="Certificate"
+            style={{
+              maxWidth: "90%", // Ensures the image is not too large
+              height: "auto",
+              borderRadius: "8px", // Optional for rounded corners
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Optional for a subtle shadow
+            }}
+          />
+        </div>
+        <div className="mt-3 text-center">
+          <button
+            style={{
+              backgroundColor: "#FFA800",
+              fontFamily: "'Noto Sans', sans-serif",
+              color: "white",
+              border: "none",
+              padding: "10px 20px",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => (e.target.style.color = "#800000")}
+            onMouseLeave={(e) => (e.target.style.color = "white")}
+            onClick={() => downloadAchievementAsPDF(selectedAchievement)}
+          >
+            Download as PDF
+          </button>
+        </div>
+      </div>
+    )}
+  </Modal.Body>
+</Modal>
+
     </div>
   );
 };
