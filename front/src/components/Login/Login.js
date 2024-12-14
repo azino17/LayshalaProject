@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Form, Alert } from "react-bootstrap";
 import TermsAndConditions from "./TermsAndConditions";
+import Button from "../Button/Button";
 
 const Login = () => {
   const [email, setEmail] = useState(""); // For student login
@@ -172,15 +173,7 @@ const Login = () => {
             />
           </Form.Group>
 
-          <button
-            type="submit"
-            className="btn w-100"
-            style={{ backgroundColor: "#FFA800" }}
-            onMouseEnter={(e) => (e.target.style.color = "#800000")}
-            onMouseLeave={(e) => (e.target.style.color = "white")}
-          >
-            Log in
-          </button>
+          <Button type="submit" className="w-100">Log in</Button>
         </form>
       </div>
 

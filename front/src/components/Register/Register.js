@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import "./Register.css";
 import { Link, useLocation } from "react-router-dom";
+import Button from "../Button/Button";
 
 const Register = () => {
   const location = useLocation();
@@ -748,19 +749,14 @@ const Register = () => {
             </div>
           </div>
           <div className="d-flex justify-content-center">
-            <button
-              type="submit"
-              className="btn"
+            <Button
               style={{
-                marginBottom: "20px",
-                backgroundColor: "#FFA800",
-                border: "none",
-                color: "#FFFFFF",
-                fontFamily: "Noto Sans,serif",
+                marginBottom: "10px",
+              
               }}
             >
               Register
-            </button>
+            </Button>
           </div>
           <p
             className="text-center"

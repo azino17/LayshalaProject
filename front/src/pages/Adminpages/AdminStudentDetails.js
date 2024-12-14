@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Modal, Table, Button, InputGroup, FormControl } from "react-bootstrap";
+// import Button from "../../components/Button/Button";
 
 const AdminStudentDetails = () => {
   const [students, setStudents] = useState([]);
@@ -93,14 +94,13 @@ const AdminStudentDetails = () => {
                 <td>{student.age}</td>
                 <td>{student.gender}</td>
                 <td>
-                  <Button
+                 <Button
                     variant=""
                     size="sm"
                     onClick={() => handleShowModal(student)}
                     className="btn w-100"
                     style={{
                       backgroundColor: "#FFA800",
-                      fontFamily: "'Noto Sans', sans-serif",
                       color:"white"
                     }}
                     onMouseEnter={(e) => (e.target.style.color = "#800000")}
@@ -108,13 +108,17 @@ const AdminStudentDetails = () => {
                   >
                     View Details
                   </Button>
+                  {/* <Button variant=""
+                    size="sm"
+                    onClick={() => handleShowModal(student)}
+                    className="w-100">View Details</Button> */}
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
       </div>
-
+ 
       {/* Modal for Detailed View */}
       {selectedStudent && (
         <Modal show={showModal} onHide={handleCloseModal} size="lg">

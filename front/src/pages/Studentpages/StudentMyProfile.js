@@ -41,7 +41,7 @@
 //               className="form-control"
 //               id="firstName"
 //               placeholder="First Name"
-              
+
 //             />
 //           </div>
 //           <div className="col-sm-5">
@@ -50,7 +50,7 @@
 //               className="form-control"
 //               id="lastName"
 //               placeholder="Last Name"
-              
+
 //             />
 //           </div>
 //         </div>
@@ -124,18 +124,23 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../pages/Studentpages/StudentUserContext";
 import axios from "axios";
+import Button from "../../components/Button/Button";
 
 const StudentMyProfile = () => {
-  const { user, setUser } = useContext(UserContext);  // Access user context
+  const { user, setUser } = useContext(UserContext); // Access user context
   const [imagePreview, setImagePreview] = useState(user.photo || null);
   const [firstName, setFirstName] = useState(user.firstName || "");
   const [lastName, setLastName] = useState(user.lastName || "");
   const [gender, setGender] = useState(user.gender || "");
   const [maritalStatus, setMaritalStatus] = useState(user.maritalStatus || "");
-  const [previousDanceEducation, setPreviousDanceEducation] = useState(user.previousDanceEducation || "");
+  const [previousDanceEducation, setPreviousDanceEducation] = useState(
+    user.previousDanceEducation || ""
+  );
   const [guruName, setGuruName] = useState(user.guruName || "");
   const [phonePrimary, setPhonePrimary] = useState(user.phonePrimary || "");
-  const [emergencyContact, setEmergencyContact] = useState(user.emergencyContact || "");
+  const [emergencyContact, setEmergencyContact] = useState(
+    user.emergencyContact || ""
+  );
 
   useEffect(() => {
     const fetchStudentProfile = async () => {
@@ -145,11 +150,14 @@ const StudentMyProfile = () => {
           throw new Error("User is not logged in");
         }
 
-        const response = await axios.get("http://localhost:5000/api/student/profile", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          "http://localhost:5000/api/student/profile",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         const data = response.data;
         setFirstName(data.firstName);
@@ -161,7 +169,6 @@ const StudentMyProfile = () => {
         setPhonePrimary(data.phonePrimary);
         setEmergencyContact(data.emergencyContact);
         setImagePreview(data.photo);
-
       } catch (error) {
         console.error("Error fetching student profile:", error);
       }
@@ -200,11 +207,15 @@ const StudentMyProfile = () => {
         emergencyContact,
       };
 
-      const response = await axios.put("http://localhost:5000/api/student/profile", updatedProfile, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.put(
+        "http://localhost:5000/api/student/profile",
+        updatedProfile,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       // Update the user context
       setUser({
@@ -221,7 +232,6 @@ const StudentMyProfile = () => {
       });
 
       alert("Profile updated successfully!");
-
     } catch (error) {
       console.error("Error saving profile:", error);
       alert("Failed to update profile.");
@@ -235,11 +245,23 @@ const StudentMyProfile = () => {
         <div>
           <h4>Personal Info</h4>
           <p className="text-muted">
-          "Update Your Personal Information ✏️ Keep Your Details Current and Accurate!"</p>
+            "Update Your Personal Information ✏️ Keep Your Details Current and
+            Accurate!"
+          </p>
         </div>
         <div>
           <button className="btn btn-outline-secondary me-2">Cancel</button>
-          <button className="btn btn-warning text-white" onClick={handleSave}>
+
+          <button
+            className="btn"
+            onClick={handleSave}
+            style={{
+              backgroundColor: "#FFA800",
+              color: "#FFFFFF",
+            }}
+            onMouseEnter={(e) => (e.target.style.color = "#800000")}
+            onMouseLeave={(e) => (e.target.style.color = "white")}
+          >
             Save
           </button>
         </div>
@@ -249,7 +271,9 @@ const StudentMyProfile = () => {
       <form>
         {/* Name Input */}
         <div className="form-group row">
-          <label htmlFor="firstName" className="col-sm-2 col-form-label">First Name</label>
+          <label htmlFor="firstName" className="col-sm-2 col-form-label">
+            First Name
+          </label>
           <div className="col-sm-4">
             <input
               type="text"
@@ -261,7 +285,9 @@ const StudentMyProfile = () => {
               placeholder="First Name"
             />
           </div>
-          <label htmlFor="lastName" className="col-sm-2 col-form-label">Last Name</label>
+          <label htmlFor="lastName" className="col-sm-2 col-form-label">
+            Last Name
+          </label>
           <div className="col-sm-4">
             <input
               type="text"
@@ -311,7 +337,12 @@ const StudentMyProfile = () => {
 
         {/* Previous Dance Education and Guru Name */}
         <div className="form-group row">
-          <label htmlFor="previousDanceEducation" className="col-sm-2 col-form-label">Previous Dance Education</label>
+          <label
+            htmlFor="previousDanceEducation"
+            className="col-sm-2 col-form-label"
+          >
+            Previous Dance Education
+          </label>
           <div className="col-sm-10">
             <textarea
               className="form-control"
@@ -325,7 +356,9 @@ const StudentMyProfile = () => {
         </div>
 
         <div className="form-group row">
-          <label htmlFor="guruName" className="col-sm-2 col-form-label">Name and address of Guru</label>
+          <label htmlFor="guruName" className="col-sm-2 col-form-label">
+            Name and address of Guru
+          </label>
           <div className="col-sm-10">
             <textarea
               className="form-control"
@@ -340,7 +373,9 @@ const StudentMyProfile = () => {
 
         {/* Contact Information */}
         <div className="form-group row">
-          <label htmlFor="primaryPhone" className="col-sm-2 col-form-label">Phone Number (Primary)</label>
+          <label htmlFor="primaryPhone" className="col-sm-2 col-form-label">
+            Phone Number (Primary)
+          </label>
           <div className="col-sm-4">
             <input
               type="tel"
@@ -354,7 +389,9 @@ const StudentMyProfile = () => {
               maxLength="10"
             />
           </div>
-          <label htmlFor="emergencyContact" className="col-sm-2 col-form-label">Emergency Contact *</label>
+          <label htmlFor="emergencyContact" className="col-sm-2 col-form-label">
+            Emergency Contact *
+          </label>
           <div className="col-sm-4">
             <input
               type="tel"
@@ -373,18 +410,37 @@ const StudentMyProfile = () => {
 
         {/* Photo Upload Section */}
         <div className="mb-3 row align-items-center">
-          <label htmlFor="photo" className="col-sm-2 col-form-label">Your Photo</label>
+          <label htmlFor="photo" className="col-sm-2 col-form-label">
+            Your Photo
+          </label>
           <div className="col-sm-2 text-center">
-            <div className="rounded-circle border" style={{ width: "80px", height: "80px", overflow: "hidden", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <div
+              className="rounded-circle border"
+              style={{
+                width: "80px",
+                height: "80px",
+                overflow: "hidden",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               {imagePreview ? (
-                <img src={imagePreview} alt="Profile" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <img
+                  src={imagePreview}
+                  alt="Profile"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
               ) : (
                 <i className="bi bi-person" style={{ fontSize: "2rem" }}></i>
               )}
             </div>
           </div>
           <div className="col-sm-8">
-            <div className="border rounded p-4 text-center" style={{ backgroundColor: "#f9f9f9" }}>
+            <div
+              className="border rounded p-4 text-center"
+              style={{ backgroundColor: "#f9f9f9" }}
+            >
               <div className="input-group mb-3">
                 <input
                   type="file"
@@ -393,7 +449,9 @@ const StudentMyProfile = () => {
                   id="photo"
                   onChange={handleImageUpload}
                 />
-                <label className="input-group-text" htmlFor="photo">Upload</label>
+                <label className="input-group-text" htmlFor="photo">
+                  Upload
+                </label>
               </div>
             </div>
           </div>

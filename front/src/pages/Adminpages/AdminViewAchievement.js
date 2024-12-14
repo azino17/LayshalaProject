@@ -79,11 +79,12 @@ const AdminViewAchievement = () => {
 
   return (
     <div className="container mt-4">
-     <div className="d-flex justify-content-between align-items-center mb-4">
+      <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h4>Achievements</h4>
           <p className="text-muted">
-          "Student Achievements: Celebrating Excellence and Success 🎓🏆"</p>
+            "Student Achievements: Celebrating Excellence and Success 🎓🏆"
+          </p>
         </div>
       </div>
       {/* Search Bar */}
@@ -134,8 +135,7 @@ const AdminViewAchievement = () => {
                       className="btn w-100"
                       style={{
                         backgroundColor: "#FFA800",
-                        fontFamily: "'Noto Sans', sans-serif",
-                        color:"white"
+                        color: "white",
                       }}
                       onMouseEnter={(e) => (e.target.style.color = "#800000")}
                       onMouseLeave={(e) => (e.target.style.color = "white")}
@@ -152,66 +152,66 @@ const AdminViewAchievement = () => {
       </div>
 
       {/* Modal for Viewing Certificate */}
-<Modal show={showModal} onHide={() => setShowModal(false)}>
-  <Modal.Header closeButton>
-    <Modal.Title>Achievement Details</Modal.Title>
-  </Modal.Header>
-  <Modal.Body
-    style={{ fontFamily: "'Noto Sans', sans-serif", textAlign: "left" }}
-  >
-    {selectedAchievement && (
-      <div>
-        <p>
-          <strong>Student Name:</strong> {selectedAchievement.studentId.studentName}
-        </p>
-        <p>
-          <strong>Event Name:</strong> {selectedAchievement.eventName}
-        </p>
-        <p>
-          <strong>Event Date:</strong>{" "}
-          {new Date(selectedAchievement.eventDate).toLocaleDateString()}
-        </p>
-        <p>
-          <strong>Rank:</strong> {selectedAchievement.rank}
-        </p>
-        <p>
-          <strong>Certificate:</strong>
-        </p>
-        <div style={{ textAlign: "center" }}>
-          <img
-            src={`data:image/jpeg;base64,${selectedAchievement.certificate}`}
-            alt="Certificate"
-            style={{
-              maxWidth: "90%", // Ensures the image is not too large
-              height: "auto",
-              borderRadius: "8px", // Optional for rounded corners
-              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Optional for a subtle shadow
-            }}
-          />
-        </div>
-        <div className="mt-3 text-center">
-          <button
-            style={{
-              backgroundColor: "#FFA800",
-              fontFamily: "'Noto Sans', sans-serif",
-              color: "white",
-              border: "none",
-              padding: "10px 20px",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
-            onMouseEnter={(e) => (e.target.style.color = "#800000")}
-            onMouseLeave={(e) => (e.target.style.color = "white")}
-            onClick={() => downloadAchievementAsPDF(selectedAchievement)}
-          >
-            Download as PDF
-          </button>
-        </div>
-      </div>
-    )}
-  </Modal.Body>
-</Modal>
-
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Achievement Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body
+          style={{ fontFamily: "'Noto Sans', sans-serif", textAlign: "left" }}
+        >
+          {selectedAchievement && (
+            <div>
+              <p>
+                <strong>Student Name:</strong>{" "}
+                {selectedAchievement.studentId.studentName}
+              </p>
+              <p>
+                <strong>Event Name:</strong> {selectedAchievement.eventName}
+              </p>
+              <p>
+                <strong>Event Date:</strong>{" "}
+                {new Date(selectedAchievement.eventDate).toLocaleDateString()}
+              </p>
+              <p>
+                <strong>Rank:</strong> {selectedAchievement.rank}
+              </p>
+              <p>
+                <strong>Certificate:</strong>
+              </p>
+              <div style={{ textAlign: "center" }}>
+                <img
+                  src={`data:image/jpeg;base64,${selectedAchievement.certificate}`}
+                  alt="Certificate"
+                  style={{
+                    maxWidth: "90%", // Ensures the image is not too large
+                    height: "auto",
+                    borderRadius: "8px", // Optional for rounded corners
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Optional for a subtle shadow
+                  }}
+                />
+              </div>
+              <div className="mt-3 text-center">
+                <button
+                  style={{
+                    backgroundColor: "#FFA800",
+                    fontFamily: "'Noto Sans', sans-serif",
+                    color: "white",
+                    border: "none",
+                    padding: "10px 20px",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                  }}
+                  onMouseEnter={(e) => (e.target.style.color = "#800000")}
+                  onMouseLeave={(e) => (e.target.style.color = "white")}
+                  onClick={() => downloadAchievementAsPDF(selectedAchievement)}
+                >
+                  Download as PDF
+                </button>
+              </div>
+            </div>
+          )}
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

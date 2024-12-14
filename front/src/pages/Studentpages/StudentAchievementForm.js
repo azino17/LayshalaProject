@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../../css/AchievementForm.css"; // For additional custom styles
 import axios from "axios";
 import statesData from "../../data/states.json"; // Import the states data
+import Button from "../../components/Button/Button";
 
 const StudentAchievementForm = () => {
   const [formData, setFormData] = useState({
@@ -217,9 +218,10 @@ const StudentAchievementForm = () => {
         </div>
 
         <div className="text-center">
-          <button type="submit" className="btn btn-warning px-5">
+          {/* <button type="submit" className="btn btn-warning px-5">
             Submit Achievement
-          </button>
+          </button> */}
+          <Button type="submit" className="px-5">Submit Achievement</Button>
         </div>
       </form>
 

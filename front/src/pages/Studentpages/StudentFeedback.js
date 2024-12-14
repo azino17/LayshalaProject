@@ -1,6 +1,7 @@
 
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Button from "../../components/Button/Button";
 
 const StudentFeedback = () => {
   const [feedbackData, setFeedbackData] = useState({
@@ -159,9 +160,10 @@ const StudentFeedback = () => {
           
 
           <div className="text-center">
-            <button type="submit" className="btn btn-warning px-5">
+            {/* <button type="submit" className="btn btn-warning px-5">
               Submit Feedback
-            </button>
+            </button> */}
+            <Button type="submit" className="px-5"> Submit Feedback</Button>
           </div>
         </form>
       </div>

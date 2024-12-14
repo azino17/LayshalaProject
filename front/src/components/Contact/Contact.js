@@ -1,6 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
+import Button from '../Button/Button';
 
 const Contact = () => {
   return (
@@ -61,15 +62,10 @@ const Contact = () => {
                 style={{ padding: '10px', height: '100px' }}
               ></textarea>
             </div>
-            <button 
-              type="submit" 
-              className="btn" 
-              style={{ width: '100%', padding: '10px',backgroundColor:"#FFA800",color:"white" }}
-              onMouseEnter={(e) => (e.target.style.color = "#800000")}
-              onMouseLeave={(e) => (e.target.style.color = "white")}
-            >
+          
+            <Button type="submit" className="w-100">
               Send Message
-            </button>
+            </Button>
           </form>
         </div>
 
