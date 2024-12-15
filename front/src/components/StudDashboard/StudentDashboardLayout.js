@@ -260,20 +260,22 @@
 
 // export default DashboardLayout;
 
-import React, { useEffect, useContext, useState } from "react";
-import { Outlet, Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { UserContext } from "../../pages/Studentpages/StudentUserContext";
+// import { UserContext } from "../../pages/Studentpages/StudentUserContext";
 import "../../css/DashboardLayout.css";
+import Button from "../Button/Button";
 
 const StudentDashboardLayout = () => {
-  const { user } = useContext(UserContext); // Access user context
+  // const { user } = useContext(UserContext); // Access user context
   const [menuOpen, setMenuOpen] = useState(false); // State to toggle menu
   const [studentData, setStudentData] = useState({
     firstName: "Loading...",
     email: "Loading...",
     photo: null,
   });
+  const navigate = useNavigate(); // For navigation after logout
 
   useEffect(() => {
     const fetchStudentData = async () => {
@@ -288,10 +290,8 @@ const StudentDashboardLayout = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        
   
         console.log("API Response:", response.data);
-
         setStudentData(response.data);
       } catch (error) {
         console.error("Error fetching student data:", error);
@@ -300,23 +300,28 @@ const StudentDashboardLayout = () => {
   
     fetchStudentData();
   }, []);
-  
+
+  const logout = () => {
+    localStorage.removeItem("authToken"); // Remove the auth token
+    navigate("/"); // Redirect to the login page
+  };
 
   return (
     <div className="dashboard-container">
       {/* Title Bar */}
       <header className="title-bar">
-      <Link className="navbar-brand d-flex align-items-center" to="/"><div className="title-left">
-          <img
-            src={process.env.PUBLIC_URL + "/assets/images/Layshala_Logo.png"}
-            alt="Logo"
-            className="logo"
-          />
-          <div className="foundation-name">
-            <span className="layshala">Layshala</span>
-            <span className="foundation">Lalit Kala Foundation</span>
+        <Link className="navbar-brand d-flex align-items-center" to="/login/student/home">
+          <div className="title-left">
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/Layshala_Logo.png"}
+              alt="Logo"
+              className="logo"
+            />
+            <div className="foundation-name">
+              <span className="layshala">Layshala</span>
+              <span className="foundation">Lalit Kala Foundation</span>
+            </div>
           </div>
-        </div>
         </Link>
         <div className="title-right">
           <span className="username">{studentData.email}</span>
@@ -326,6 +331,32 @@ const StudentDashboardLayout = () => {
           >
             ☰
           </button>
+          {/* <button
+            className="logout-btn"
+            onClick={logout}
+            style={{
+              marginLeft: "10px",
+              padding: "5px 10px",
+              backgroundColor: "#f44336", // Red background for logout
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            Logout
+          </button> */}
+          <Button 
+           
+           onClick={logout}
+          style={{
+              marginLeft: "10px",
+              padding: "5px 10px",
+              borderRadius: "5px",
+              
+            }}>
+            Logout
+            </Button>
         </div>
       </header>
 
@@ -423,9 +454,7 @@ const StudentDashboardLayout = () => {
                 ></i>
               )}
             </div>
-            <p className="mt-2">
-              {`${studentData.firstName}`}
-            </p>
+            <p className="mt-2">{`${studentData.firstName}`}</p>
           </div>
           <ul>
             <li>
@@ -441,9 +470,7 @@ const StudentDashboardLayout = () => {
             <li>
               <Link to="/login/student/myprofile" className="list-items">
                 <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/Profile-logo.png"
-                  }
+                  src={process.env.PUBLIC_URL + "/assets/images/Profile-logo.png"}
                   alt="My Profile"
                   className="sidebar-logo"
                 />
@@ -453,9 +480,7 @@ const StudentDashboardLayout = () => {
             <li>
               <Link to="/login/student/events" className="list-items">
                 <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/events-logo.png"
-                  }
+                  src={process.env.PUBLIC_URL + "/assets/images/events-logo.png"}
                   alt="Events"
                   className="sidebar-logo"
                 />
@@ -465,34 +490,27 @@ const StudentDashboardLayout = () => {
             <li>
               <Link to="/login/student/achievements" className="list-items">
                 <img
-                  src={
-                    process.env.PUBLIC_URL +
-                    "/assets/images/achievements-logo.png"
-                  }
+                  src={process.env.PUBLIC_URL + "/assets/images/achievements-logo.png"}
                   alt="Achievements"
                   className="sidebar-logo"
                 />
                 My Achievements
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link to="/login/student/studcorner" className="list-items">
                 <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/student-logo.png"
-                  }
+                  src={process.env.PUBLIC_URL + "/assets/images/student-logo.png"}
                   alt="Student's Corner"
                   className="sidebar-logo"
                 />
                 Student's Corner
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link to="/login/student/tutsection" className="list-items">
                 <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/tutorial-logo.png"
-                  }
+                  src={process.env.PUBLIC_URL + "/assets/images/tutorial-logo.png"}
                   alt="Tutorial's Section"
                   className="sidebar-logo"
                 />
@@ -502,9 +520,7 @@ const StudentDashboardLayout = () => {
             <li>
               <Link to="/login/student/feedback" className="list-items">
                 <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/feedback-logo.png"
-                  }
+                  src={process.env.PUBLIC_URL + "/assets/images/feedback-logo.png"}
                   alt="Feedback"
                   className="sidebar-logo"
                 />

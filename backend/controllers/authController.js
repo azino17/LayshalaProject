@@ -15,11 +15,6 @@ const loginUser = async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ error: 'Invalid email or password' });
         }
-        if (!user || !user._id || !user.studentName) {
-            throw new Error('User object is missing required fields.');
-        }
-
-        console.log(user, user.id, user.studentName, "dattttt")
 
         const token = jwt.sign({ user: { id: user._id, name: user.studentName } }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.status(200).json({ token, message: 'Login successful' });

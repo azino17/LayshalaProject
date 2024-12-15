@@ -236,7 +236,16 @@ const AdminStudentDetails = () => {
             </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>
+            <Button 
+            variant=""
+            onClick={handleCloseModal}
+            style={{
+                      backgroundColor: "#FFA800",
+                      color:"white"
+                    }}
+                    onMouseEnter={(e) => (e.target.style.color = "#800000")}
+                    onMouseLeave={(e) => (e.target.style.color = "white")}
+            >
               Close
             </Button>
           </Modal.Footer>

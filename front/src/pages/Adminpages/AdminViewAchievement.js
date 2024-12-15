@@ -49,33 +49,30 @@ const AdminViewAchievement = () => {
 
   const downloadAchievementAsPDF = (achievement) => {
     const doc = new jsPDF();
-
-    // Add title
     doc.setFontSize(18);
     doc.text("Achievement Details", 10, 10);
 
-    // Add details
     doc.setFontSize(12);
     doc.text(`Student Name: ${achievement.studentId.studentName}`, 10, 30);
-    doc.text(`Event Name: ${achievement.eventName}`, 10, 40);
+    doc.text(`Event Name: ${achievement.eventName || "N/A"}`, 10, 40);
     doc.text(
       `Event Date: ${new Date(achievement.eventDate).toLocaleDateString()}`,
       10,
       50
     );
-    doc.text(`Rank: ${achievement.rank}`, 10, 60);
+    doc.text(`Rank: ${achievement.rank || "N/A"}`, 10, 60);
+    doc.text(`Place: ${achievement.place || "N/A"}`, 10, 70);
+    doc.text(`State: ${achievement.state || "N/A"}`, 10, 80);
+    doc.text(`Event Type: ${achievement.eventtype || "N/A"}`, 10, 90);
+    doc.text(`Location: ${achievement.location || "N/A"}`, 10, 100);
 
-    // Add certificate image (if any)
     if (achievement.certificate) {
       const certificateImage = `data:image/jpeg;base64,${achievement.certificate}`;
-
-      // Adjust the position and size of the image in the PDF
-      doc.addImage(certificateImage, "JPEG", 10, 70, 100, 100); // x, y, width, height
+      doc.addImage(certificateImage, "JPEG", 10, 110, 100, 100); // x, y, width, height
     }
-
-    // Save the PDF
     doc.save(`${achievement.studentId.studentName}_Achievement.pdf`);
   };
+
 
   return (
     <div className="container mt-4">
@@ -161,19 +158,31 @@ const AdminViewAchievement = () => {
         >
           {selectedAchievement && (
             <div>
-              <p>
+            <p>
                 <strong>Student Name:</strong>{" "}
                 {selectedAchievement.studentId.studentName}
               </p>
               <p>
-                <strong>Event Name:</strong> {selectedAchievement.eventName}
+                <strong>Event Name:</strong> {selectedAchievement.eventName || "N/A"}
               </p>
               <p>
                 <strong>Event Date:</strong>{" "}
                 {new Date(selectedAchievement.eventDate).toLocaleDateString()}
               </p>
               <p>
-                <strong>Rank:</strong> {selectedAchievement.rank}
+                <strong>Rank:</strong> {selectedAchievement.rank || "N/A"}
+              </p>
+              <p>
+                <strong>Place:</strong> {selectedAchievement.place || "N/A"}
+              </p>
+              <p>
+                <strong>State:</strong> {selectedAchievement.state || "N/A"}
+              </p>
+              <p>
+                <strong>Event Type:</strong> {selectedAchievement.eventtype || "N/A"}
+              </p>
+              <p>
+                <strong>Location:</strong> {selectedAchievement.location || "N/A"}
               </p>
               <p>
                 <strong>Certificate:</strong>

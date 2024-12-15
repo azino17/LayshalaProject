@@ -90,7 +90,7 @@ const Footer = () => {
                 style={{ fontFamily: "Noto Sans", color: "#FFFFFF" }}
               >
                 {/* Links */}
-                <h6 className="fw-bold mb-4">Students</h6>
+                <h6 className=" text-uppercase fw-bold mb-4">Students</h6>
                 <p>
                   <Link
                     to="/login/student"

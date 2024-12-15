@@ -262,13 +262,23 @@
 // export default DashboardLayout;
 
 import React, { useContext, useState } from "react";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../pages/Adminpages/AdminUserContext";
 import "../../css/DashboardLayout.css";
+import Button from "../Button/Button";
 
 const AdminDashboardLayout = () => {
   const { user } = useContext(UserContext); // Access user context
   const [menuOpen, setMenuOpen] = useState(false); // State to toggle menu
+  const navigate = useNavigate(); // Use the navigate hook to redirect
+
+  const handleLogout = () => {
+    // Clear the authentication token from local storage
+    localStorage.removeItem("authToken");
+    // Optionally, clear any other user-related data
+    // Redirect to the homepage after logout
+    navigate("/");
+  };
 
   return (
     <div className="dashboard-container">
@@ -293,6 +303,17 @@ const AdminDashboardLayout = () => {
           >
             ☰
           </button>
+          {/* Logout Button */}
+          <Button 
+          onClick={handleLogout}  
+          style={{
+              marginLeft: "10px",
+              padding: "5px 10px",
+              borderRadius: "5px",
+              
+            }}>
+            Logout
+          </Button>
         </div>
       </header>
 
@@ -450,7 +471,8 @@ const AdminDashboardLayout = () => {
               <Link to="/login/admin/achievements1" className="list-items">
                 <img
                   src={
-                    process.env.PUBLIC_URL + "/assets/images/achievements-logo.png"
+                    process.env.PUBLIC_URL +
+                    "/assets/images/achievements-logo.png"
                   }
                   alt="Achievements"
                   className="sidebar-logo"
