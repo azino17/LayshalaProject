@@ -96,6 +96,15 @@ const StudentAchievementForm = () => {
     }
   };
 
+  const [showDetails, setShowDetails] = useState({});
+
+  const toggleDetails = (id) => {
+    setShowDetails((prevState) => ({
+      ...prevState,
+      [id]: !prevState[id],
+    }));
+  };
+
   return (
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -241,87 +250,76 @@ const StudentAchievementForm = () => {
       </form>
 
       <div className="mt-4">
-        <div
-          className="card p-4"
-          style={{ backgroundColor: "#f8f9fa", borderRadius: "8px" }}
-        >
-          <h4
-            className="text-center"
-            style={{
-              fontFamily: "Noto Sans",
-              fontWeight: "800",
-              fontSize: "20px",
-              opacity: "0.5",
-            }}
-          >
-            PREVIOUS ACHIEVEMENTS
-          </h4>
-          <div className="row">
-            {achievements.length > 0 ? (
-              achievements.map((achievement) => (
-                <div
-                  key={achievement._id}
-                  className="col-md-4 mb-4"
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <div
-                    className="card card-hover"
-                    style={{
-                      width: "100%",
-                      border: "1px solid #ddd",
-                      borderRadius: "8px",
-                      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                      backgroundColor: "#ffffff",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <img
-                      src={`data:image/jpg;base64,${achievement.certificate}`}
-                      alt="certificate"
-                      style={{
-                        width: "100%",
-                        height: "200px",
-                        objectFit: "cover",
-                      }}
-                    />
-                    <div style={{ padding: "15px" }}>
-                      <h5
-                        style={{
-                          fontWeight: "bold",
-                          textAlign: "center",
-                        }}
+      <div
+        className="card-container p-4"
+        style={{ backgroundColor: "#f8f9fa", borderRadius: "8px" }}
+      >
+        <h4 className="card-header text-center">PREVIOUS ACHIEVEMENTS</h4>
+        <div className="row">
+          {achievements.length > 0 ? (
+            achievements.map((achievement) => (
+              <div
+                key={achievement._id}
+                className="col-md-4 mb-4"
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <div className="card card-hover">
+                  <img
+                    src={`data:image/jpg;base64,${achievement.certificate}`}
+                    alt="certificate"
+                    className="card-img"
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">{achievement.eventName}</h5>
+                    <p className="card-date">
+                      {new Date(achievement.eventDate).toDateString()}
+                    </p>
+
+                    {/* Show only essential info initially */}
+                    {showDetails[achievement._id] && (
+                      <>
+                        <p className="card-text">
+                          Rank: {achievement.rank}
+                        </p>
+                        <p className="card-text">
+                          Place: {achievement.place}
+                        </p>
+                        <p className="card-text">
+                          State: {achievement.state}
+                        </p>
+                        <p className="card-text">
+                          Eventype: {achievement.eventtype}
+                        </p>
+                      </>
+                    )}
+
+                    {/* Read More button */}
+                    <div className="text-center mt-3">
+                      <button
+                        onClick={() => toggleDetails(achievement._id)}
+                        className={`read-more-btn ${
+                          showDetails[achievement._id] ? "show-less" : ""
+                        }`}
                       >
-                        {achievement.eventName}
-                      </h5>
-                      <p style={{ textAlign: "center" }}>
-                        {new Date(achievement.eventDate).toDateString()}
-                      </p>
-                      <p style={{ textAlign: "center" }}>
-                        Rank: {achievement.rank}
-                      </p>
-                      <p style={{ textAlign: "center" }}>
-                        Place: {achievement.place}
-                      </p>
-                      <p style={{ textAlign: "center" }}>
-                        State: {achievement.state}
-                      </p>
-                      <p style={{ textAlign: "center" }}>
-                        Eventype: {achievement.eventtype}
-                      </p>
+                        {showDetails[achievement._id]
+                          ? "Show Less"
+                          : "Read More"}
+                      </button>
                     </div>
                   </div>
                 </div>
-              ))
-            ) : (
-              <p className="text-center">No achievements to display</p>
-            )}
-          </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-center">No achievements to display</p>
+          )}
         </div>
       </div>
-
+    </div>
+    
       <ToastContainer />
     </div>
   );

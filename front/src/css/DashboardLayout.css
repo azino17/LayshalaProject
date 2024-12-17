@@ -244,3 +244,69 @@
   margin: 0;
   font-weight: bold;
 }
+
+
+/* Off-Canvas Menu Styles */
+.offcanvas-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: -4px 0px 10px rgba(0, 0, 0, 0.2);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+.offcanvas-menu.open {
+  transform: translateX(0);
+}
+
+.offcanvas-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.offcanvas-body {
+  padding: 20px;
+}
+
+.offcanvas-body ul {
+  list-style: none;
+  padding: 0;
+}
+
+.offcanvas-body ul li {
+  padding: 10px 0;
+}
+
+.offcanvas-body ul li a {
+  text-decoration: none;
+  color: #333;
+}
+
+/* Ensure logout button aligns with logo on mobile */
+@media (max-width: 768px) {
+  .title-right {
+    flex-direction: row-reverse; /* Push logout button to the right */
+    align-items: center; /* Vertically align the button with the logo */
+  }
+
+  .logout-btn {
+    margin-left: 10px; /* Optional: add space between button and logo */
+  }
+
+  .username {
+    display: none; /* Hide username on mobile */
+  }
+}
+
+/* For larger screens, ensure logout button stays in the header */
+@media (min-width: 769px) {
+  .title-right {
+    flex-direction: row; /* Keep original row direction for desktop */
+  }
+}
