@@ -30,7 +30,7 @@ const StudentAchievementForm = () => {
       if (!token) throw new Error("User is not logged in");
 
       const response = await axios.get(
-        "http://localhost:5000/api/student/achievements",
+        `${process.env.REACT_APP_BACKEND_URL}/api/student/achievements`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -74,7 +74,7 @@ const StudentAchievementForm = () => {
       formDataToSend.append("certificate", formData.certificate);
 
       await axios.post(
-        "http://localhost:5000/api/student/achievements",
+        `${process.env.REACT_APP_BACKEND_URL}/api/student/achievements`,
         formDataToSend,
         {
           headers: {

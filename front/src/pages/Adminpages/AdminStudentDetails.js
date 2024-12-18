@@ -15,7 +15,7 @@ const AdminStudentDetails = () => {
       try {
         const token = localStorage.getItem("AdminToken");
         const response = await axios.get(
-          "http://localhost:5000/api/admin/students",
+          `${process.env.REACT_APP_BACKEND_URL}/api/admin/students`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }

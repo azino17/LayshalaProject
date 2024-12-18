@@ -27,8 +27,8 @@
 //     try {
 //       const endpoint =
 //         userType === "student"
-//           ? "http://localhost:5000/api/auth/login"
-//           : "http://localhost:5000/api/admin/login";
+//           ? "process.env.REACT_APP_BACKEND_URL/api/auth/login"
+//           : "process.env.REACT_APP_BACKEND_URL/api/admin/login";
 
 //       const payload =
 //         userType === "student"
@@ -221,8 +221,8 @@ const Login = () => {
     try {
       const endpoint =
         userType === "student"
-          ? "http://localhost:5000/api/auth/login"
-          : "http://localhost:5000/api/admin/login";
+          ? `${process.env.REACT_APP_BACKEND_URL}/api/auth/login`
+          : `${process.env.REACT_APP_BACKEND_URL}/api/admin/login`
 
       const payload =
         userType === "student"

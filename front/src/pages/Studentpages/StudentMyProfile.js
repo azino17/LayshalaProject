@@ -495,7 +495,7 @@ const StudentMyProfile = () => {
         }
 
         const response = await axios.get(
-          "http://localhost:5000/api/student/profile",
+          `${process.env.REACT_APP_BACKEND_URL}/api/student/profile`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -568,7 +568,7 @@ const StudentMyProfile = () => {
       };
 
       await axios.put(
-        "http://localhost:5000/api/student/profile",
+       `${process.env.REACT_APP_BACKEND_URL}/api/student/profile`,
         updatedProfile,
         {
           headers: {

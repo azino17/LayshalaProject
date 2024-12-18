@@ -146,7 +146,7 @@ const Register = () => {
       // Automatically set the password as the email
       const dataToSend = { ...formData, password: formData.email };
       const response = await axios.post(
-        "http://localhost:5000/api/register",
+        `${process.env.REACT_APP_BACKEND_URL}/api/register`,
         dataToSend
       );
       alert(response.data.message);

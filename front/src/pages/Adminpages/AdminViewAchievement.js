@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import jsPDF from "jspdf";
 import { Table, Button, Modal, InputGroup, FormControl } from "react-bootstrap";
+const dotenv = require('dotenv');
 
 const AdminViewAchievement = () => {
   const [achievements, setAchievements] = useState([]);
@@ -15,7 +16,7 @@ const AdminViewAchievement = () => {
       try {
         const token = localStorage.getItem("AdminToken");
         const response = await axios.get(
-          "http://localhost:5000/api/admin/achievements",
+           `${process.env.REACT_APP_BACKEND_URL}/api/admin/achievements`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
