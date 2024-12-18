@@ -282,12 +282,12 @@ const Footer = () => {
   };
 
   // Notify and navigate for courses
-  const notifyAndNavigate = () => {
-    toast.success("Navigating to the courses page...", {
-      onClose: () => navigate("/next-page"), // Navigate after toast closes
-      autoClose: 2000,
-    });
-  };
+  // const notifyAndNavigate = () => {
+  //   toast.success("Navigating to the courses page...", {
+  //     onClose: () => navigate("/next-page"), // Navigate after toast closes
+  //     autoClose: 2000,
+  //   });
+  // };
 
   return (
     <>
