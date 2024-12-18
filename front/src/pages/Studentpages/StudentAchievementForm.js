@@ -3,20 +3,25 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../../css/AchievementForm.css"; // For additional custom styles
 import axios from "axios";
 import statesData from "../../data/states.json"; // Import the states data
+import Button from "../../components/Button/Button";
+import { ToastContainer, toast } from "react-toastify";
+import { Spinner } from "react-bootstrap";
+import "react-toastify/dist/ReactToastify.css";
 
 const StudentAchievementForm = () => {
   const [formData, setFormData] = useState({
     eventName: "",
     eventDate: "",
     rank: "",
-    place: "", // New field
+    place: "",
     state: "",
     eventtype: "",
-    location: "", // New field
+    location: "",
     certificate: null,
   });
 
   const [achievements, setAchievements] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // Fetch previous achievements
   const fetchAchievements = async () => {
@@ -31,7 +36,7 @@ const StudentAchievementForm = () => {
         }
       );
 
-      setAchievements(response.data.achievements); // Assuming achievements are in the response data
+      setAchievements(response.data.achievements);
     } catch (error) {
       console.error("Error fetching achievements:", error);
     }
@@ -52,6 +57,8 @@ const StudentAchievementForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     try {
       const token = localStorage.getItem("authToken");
       if (!token) throw new Error("User is not logged in");
@@ -77,11 +84,25 @@ const StudentAchievementForm = () => {
         }
       );
 
+      // Show success toast message
+      toast.success("Achievement submitted successfully!");
       // Fetch updated achievements
       fetchAchievements();
     } catch (error) {
       console.error("Error submitting achievement:", error);
+      toast.error("Failed to submit achievement.");
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const [showDetails, setShowDetails] = useState({});
+
+  const toggleDetails = (id) => {
+    setShowDetails((prevState) => ({
+      ...prevState,
+      [id]: !prevState[id],
+    }));
   };
 
   return (
@@ -89,7 +110,9 @@ const StudentAchievementForm = () => {
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h4>Submit Your Achievement</h4>
-          <p className="text-muted">"Showcase Your Triumphs! 🏆 Let Your Achievements Shine Bright 🏅."</p>
+          <p className="text-muted">
+            "Showcase Your Triumphs! 🏆 Let Your Achievements Shine Bright 🏅."
+          </p>
         </div>
       </div>
 
@@ -131,7 +154,6 @@ const StudentAchievementForm = () => {
               value={formData.rank}
               onChange={handleChange}
               placeholder="Enter the rank"
-              required
             />
           </div>
 
@@ -217,83 +239,88 @@ const StudentAchievementForm = () => {
         </div>
 
         <div className="text-center">
-          <button type="submit" className="btn btn-warning px-5">
-            Submit Achievement
-          </button>
+          {loading ? (
+            <Spinner animation="border" variant="primary" />
+          ) : (
+            <Button type="submit" className="px-5">
+              Submit Achievement
+            </Button>
+          )}
         </div>
       </form>
 
-      {/* Existing Previous Achievements Section */}
-      {/* Existing Previous Achievements Section */}
-
       <div className="mt-4">
-  <div
-    className="card p-4"
-    style={{ backgroundColor: "#f8f9fa", borderRadius: "8px" }}
-  >
-    <h4
-      className="text-center"
-      style={{
-        fontFamily: "Noto Sans",
-        fontWeight: "800",
-        fontSize: "20px",
-        opacity: "0.5",
-      }}
-    >
-      PREVIOUS ACHIEVEMENTS
-    </h4>
-    <div className="row">
-      {achievements.length > 0 ? (
-        achievements.map((achievement) => (
-          <div
-            key={achievement._id}
-            className="col-md-4 mb-4"
-            style={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <div
-              className="card card-hover"
-              style={{
-                width: "100%",
-                border: "1px solid #ddd",
-                borderRadius: "8px",
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                backgroundColor: "#ffffff",
-                overflow: "hidden",
-              }}
-            >
-              <img
-                src={`data:image/jpg;base64,${achievement.certificate}`}
-                alt="certificate"
+      <div
+        className="card-container p-4"
+        style={{ backgroundColor: "#f8f9fa", borderRadius: "8px" }}
+      >
+        <h4 className="card-header text-center">PREVIOUS ACHIEVEMENTS</h4>
+        <div className="row">
+          {achievements.length > 0 ? (
+            achievements.map((achievement) => (
+              <div
+                key={achievement._id}
+                className="col-md-4 mb-4"
                 style={{
-                  width: "100%",
-                  height: "200px",
-                  objectFit: "cover",
+                  display: "flex",
+                  justifyContent: "center",
                 }}
-              />
-              <div style={{ padding: "15px" }}>
-                <h5 style={{ fontWeight: "bold", textAlign: "center" }}>
-                  {achievement.eventName}
-                </h5>
-                <p style={{ textAlign: "center" }}>
-                  {new Date(achievement.eventDate).toDateString()}
-                </p>
-                <p style={{ textAlign: "center" }}>Rank: {achievement.rank}</p>
-                <p style={{ textAlign: "center" }}>Place: {achievement.place}</p>
-                <p style={{ textAlign: "center" }}>State: {achievement.state}</p>
-                <p style={{ textAlign: "center" }}>Eventype: {achievement.eventtype}</p>
+              >
+                <div className="card card-hover">
+                  <img
+                    src={`data:image/jpg;base64,${achievement.certificate}`}
+                    alt="certificate"
+                    className="card-img"
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">{achievement.eventName}</h5>
+                    <p className="card-date">
+                      {new Date(achievement.eventDate).toDateString()}
+                    </p>
+
+                    {/* Show only essential info initially */}
+                    {showDetails[achievement._id] && (
+                      <>
+                        <p className="card-text">
+                          Rank: {achievement.rank}
+                        </p>
+                        <p className="card-text">
+                          Place: {achievement.place}
+                        </p>
+                        <p className="card-text">
+                          State: {achievement.state}
+                        </p>
+                        <p className="card-text">
+                          Eventype: {achievement.eventtype}
+                        </p>
+                      </>
+                    )}
+
+                    {/* Read More button */}
+                    <div className="text-center mt-3">
+                      <button
+                        onClick={() => toggleDetails(achievement._id)}
+                        className={`read-more-btn ${
+                          showDetails[achievement._id] ? "show-less" : ""
+                        }`}
+                      >
+                        {showDetails[achievement._id]
+                          ? "Show Less"
+                          : "Read More"}
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        ))
-      ) : (
-        <p className="text-center">No achievements to display</p>
-      )}
+            ))
+          ) : (
+            <p className="text-center">No achievements to display</p>
+          )}
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+    
+      <ToastContainer />
     </div>
   );
 };

@@ -41,7 +41,7 @@
 //               className="form-control"
 //               id="firstName"
 //               placeholder="First Name"
-              
+
 //             />
 //           </div>
 //           <div className="col-sm-5">
@@ -50,7 +50,7 @@
 //               className="form-control"
 //               id="lastName"
 //               placeholder="Last Name"
-              
+
 //             />
 //           </div>
 //         </div>
@@ -121,21 +121,370 @@
 // };
 
 // export default MyProfile;
+// import React, { useState, useEffect, useContext } from "react";
+// import { UserContext } from "../../pages/Studentpages/StudentUserContext";
+// import axios from "axios";
+// import Button from "../../components/Button/Button";
+
+// const StudentMyProfile = () => {
+//   const { user, setUser } = useContext(UserContext); // Access user context
+//   const [imagePreview, setImagePreview] = useState(user.photo || null);
+//   const [firstName, setFirstName] = useState(user.firstName || "");
+//   const [lastName, setLastName] = useState(user.lastName || "");
+//   const [gender, setGender] = useState(user.gender || "");
+//   const [maritalStatus, setMaritalStatus] = useState(user.maritalStatus || "");
+//   const [previousDanceEducation, setPreviousDanceEducation] = useState(
+//     user.previousDanceEducation || ""
+//   );
+//   const [guruName, setGuruName] = useState(user.guruName || "");
+//   const [phonePrimary, setPhonePrimary] = useState(user.phonePrimary || "");
+//   const [emergencyContact, setEmergencyContact] = useState(
+//     user.emergencyContact || ""
+//   );
+
+//   useEffect(() => {
+//     const fetchStudentProfile = async () => {
+//       try {
+//         const token = localStorage.getItem("authToken");
+//         if (!token) {
+//           throw new Error("User is not logged in");
+//         }
+
+//         const response = await axios.get(
+//           "http://localhost:5000/api/student/profile",
+//           {
+//             headers: {
+//               Authorization: `Bearer ${token}`,
+//             },
+//           }
+//         );
+
+//         const data = response.data;
+//         setFirstName(data.firstName);
+//         setLastName(data.lastName);
+//         setGender(data.gender);
+//         setMaritalStatus(data.maritalStatus);
+//         setPreviousDanceEducation(data.previousDanceEducation);
+//         setGuruName(data.guruName);
+//         setPhonePrimary(data.phonePrimary);
+//         setEmergencyContact(data.emergencyContact);
+//         setImagePreview(data.photo);
+//       } catch (error) {
+//         console.error("Error fetching student profile:", error);
+//       }
+//     };
+
+//     fetchStudentProfile();
+//   }, []);
+
+//   const handleImageUpload = (event) => {
+//     const file = event.target.files[0];
+//     if (file) {
+//       const reader = new FileReader();
+//       reader.onload = () => {
+//         setImagePreview(reader.result);
+//       };
+//       reader.readAsDataURL(file);
+//     }
+//   };
+
+//   const handleSave = async () => {
+//     try {
+//       const token = localStorage.getItem("authToken");
+//       if (!token) {
+//         throw new Error("User is not logged in");
+//       }
+
+//       const updatedProfile = {
+//         firstName,
+//         lastName,
+//         photo: imagePreview,
+//         gender,
+//         maritalStatus,
+//         previousDanceEducation,
+//         guruName,
+//         phonePrimary,
+//         emergencyContact,
+//       };
+
+//       const response = await axios.put(
+//         "http://localhost:5000/api/student/profile",
+//         updatedProfile,
+//         {
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//           },
+//         }
+//       );
+
+//       // Update the user context
+//       setUser({
+//         ...user,
+//         firstName,
+//         lastName,
+//         photo: imagePreview,
+//         gender,
+//         maritalStatus,
+//         previousDanceEducation,
+//         guruName,
+//         phonePrimary,
+//         emergencyContact,
+//       });
+
+//       alert("Profile updated successfully!");
+//     } catch (error) {
+//       console.error("Error saving profile:", error);
+//       alert("Failed to update profile.");
+//     }
+//   };
+
+//   return (
+//     <div className="container mt-4">
+//       {/* Header Section */}
+//       <div className="d-flex justify-content-between align-items-center mb-4">
+//         <div>
+//           <h4>Personal Info</h4>
+//           <p className="text-muted">
+//             "Update Your Personal Information ✏️ Keep Your Details Current and
+//             Accurate!"
+//           </p>
+//         </div>
+//         <div>
+//           <button className="btn btn-outline-secondary me-2">Cancel</button>
+
+//           <button
+//             className="btn"
+//             onClick={handleSave}
+//             style={{
+//               backgroundColor: "#FFA800",
+//               color: "#FFFFFF",
+//             }}
+//             onMouseEnter={(e) => (e.target.style.color = "#800000")}
+//             onMouseLeave={(e) => (e.target.style.color = "white")}
+//           >
+//             Save
+//           </button>
+//         </div>
+//       </div>
+
+//       {/* Form Section */}
+//       <form>
+//         {/* Name Input */}
+//         <div className="form-group row">
+//           <label htmlFor="firstName" className="col-sm-2 col-form-label">
+//             First Name
+//           </label>
+//           <div className="col-sm-4">
+//             <input
+//               type="text"
+//               name="firstName"
+//               value={firstName}
+//               onChange={(e) => setFirstName(e.target.value)}
+//               className="form-control"
+//               id="firstName"
+//               placeholder="First Name"
+//             />
+//           </div>
+//           <label htmlFor="lastName" className="col-sm-2 col-form-label">
+//             Last Name
+//           </label>
+//           <div className="col-sm-4">
+//             <input
+//               type="text"
+//               name="lastName"
+//               value={lastName}
+//               onChange={(e) => setLastName(e.target.value)}
+//               className="form-control"
+//               id="lastName"
+//               placeholder="Last Name"
+//             />
+//           </div>
+//         </div>
+
+//         {/* Gender and Marital Status */}
+//         <div className="form-group row">
+//           <label className="col-sm-2 col-form-label">Gender</label>
+//           <div className="col-sm-4">
+//             <select
+//               className="form-select"
+//               id="gender"
+//               name="gender"
+//               value={gender}
+//               onChange={(e) => setGender(e.target.value)}
+//             >
+//               <option value="">Choose...</option>
+//               <option value="Male">Male</option>
+//               <option value="Female">Female</option>
+//               <option value="Others">Others</option>
+//             </select>
+//           </div>
+//           <label className="col-sm-2 col-form-label">Marital Status</label>
+//           <div className="col-sm-4">
+//             <select
+//               className="form-select"
+//               id="maritalStatus"
+//               name="maritalStatus"
+//               value={maritalStatus}
+//               onChange={(e) => setMaritalStatus(e.target.value)}
+//             >
+//               <option value="">Choose...</option>
+//               <option value="Married">Married</option>
+//               <option value="Unmarried">Unmarried</option>
+//               <option value="Divorced">Divorced</option>
+//             </select>
+//           </div>
+//         </div>
+
+//         {/* Previous Dance Education and Guru Name */}
+//         <div className="form-group row">
+//           <label
+//             htmlFor="previousDanceEducation"
+//             className="col-sm-2 col-form-label"
+//           >
+//             Previous Dance Education
+//           </label>
+//           <div className="col-sm-10">
+//             <textarea
+//               className="form-control"
+//               name="previousDanceEducation"
+//               value={previousDanceEducation}
+//               onChange={(e) => setPreviousDanceEducation(e.target.value)}
+//               id="previousDanceEducation"
+//               placeholder="Previous Dance Education"
+//             />
+//           </div>
+//         </div>
+
+//         <div className="form-group row">
+//           <label htmlFor="guruName" className="col-sm-2 col-form-label">
+//             Name and address of Guru
+//           </label>
+//           <div className="col-sm-10">
+//             <textarea
+//               className="form-control"
+//               name="guruName"
+//               value={guruName}
+//               onChange={(e) => setGuruName(e.target.value)}
+//               id="guruName"
+//               placeholder="Name and address of Guru"
+//             />
+//           </div>
+//         </div>
+
+//         {/* Contact Information */}
+//         <div className="form-group row">
+//           <label htmlFor="primaryPhone" className="col-sm-2 col-form-label">
+//             Phone Number (Primary)
+//           </label>
+//           <div className="col-sm-4">
+//             <input
+//               type="tel"
+//               name="phonePrimary"
+//               value={phonePrimary}
+//               onChange={(e) => setPhonePrimary(e.target.value)}
+//               className="form-control"
+//               id="primaryPhone"
+//               placeholder="eg-(012-345-6789)"
+//               pattern="[0-9]{10}"
+//               maxLength="10"
+//             />
+//           </div>
+//           <label htmlFor="emergencyContact" className="col-sm-2 col-form-label">
+//             Emergency Contact *
+//           </label>
+//           <div className="col-sm-4">
+//             <input
+//               type="tel"
+//               name="emergencyContact"
+//               value={emergencyContact}
+//               onChange={(e) => setEmergencyContact(e.target.value)}
+//               className="form-control"
+//               id="emergencyContact"
+//               placeholder="eg-(012-345-6789)"
+//               pattern="[0-9]{10}"
+//               maxLength="10"
+//               required
+//             />
+//           </div>
+//         </div>
+
+//         {/* Photo Upload Section */}
+//         <div className="mb-3 row align-items-center">
+//           <label htmlFor="photo" className="col-sm-2 col-form-label">
+//             Your Photo
+//           </label>
+//           <div className="col-sm-2 text-center">
+//             <div
+//               className="rounded-circle border"
+//               style={{
+//                 width: "80px",
+//                 height: "80px",
+//                 overflow: "hidden",
+//                 display: "flex",
+//                 justifyContent: "center",
+//                 alignItems: "center",
+//               }}
+//             >
+//               {imagePreview ? (
+//                 <img
+//                   src={imagePreview}
+//                   alt="Profile"
+//                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
+//                 />
+//               ) : (
+//                 <i className="bi bi-person" style={{ fontSize: "2rem" }}></i>
+//               )}
+//             </div>
+//           </div>
+//           <div className="col-sm-8">
+//             <div
+//               className="border rounded p-4 text-center"
+//               style={{ backgroundColor: "#f9f9f9" }}
+//             >
+//               <div className="input-group mb-3">
+//                 <input
+//                   type="file"
+//                   accept="image/*"
+//                   className="form-control"
+//                   id="photo"
+//                   onChange={handleImageUpload}
+//                 />
+//                 <label className="input-group-text" htmlFor="photo">
+//                   Upload
+//                 </label>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default StudentMyProfile;
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../pages/Studentpages/StudentUserContext";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Spinner from "react-bootstrap/Spinner";
 
 const StudentMyProfile = () => {
-  const { user, setUser } = useContext(UserContext);  // Access user context
+  const { user, setUser } = useContext(UserContext);
   const [imagePreview, setImagePreview] = useState(user.photo || null);
   const [firstName, setFirstName] = useState(user.firstName || "");
   const [lastName, setLastName] = useState(user.lastName || "");
   const [gender, setGender] = useState(user.gender || "");
   const [maritalStatus, setMaritalStatus] = useState(user.maritalStatus || "");
-  const [previousDanceEducation, setPreviousDanceEducation] = useState(user.previousDanceEducation || "");
+  const [previousDanceEducation, setPreviousDanceEducation] = useState(
+    user.previousDanceEducation || ""
+  );
   const [guruName, setGuruName] = useState(user.guruName || "");
   const [phonePrimary, setPhonePrimary] = useState(user.phonePrimary || "");
-  const [emergencyContact, setEmergencyContact] = useState(user.emergencyContact || "");
+  const [emergencyContact, setEmergencyContact] = useState(
+    user.emergencyContact || ""
+  );
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchStudentProfile = async () => {
@@ -145,11 +494,14 @@ const StudentMyProfile = () => {
           throw new Error("User is not logged in");
         }
 
-        const response = await axios.get("http://localhost:5000/api/student/profile", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          "http://localhost:5000/api/student/profile",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         const data = response.data;
         setFirstName(data.firstName);
@@ -161,7 +513,6 @@ const StudentMyProfile = () => {
         setPhonePrimary(data.phonePrimary);
         setEmergencyContact(data.emergencyContact);
         setImagePreview(data.photo);
-
       } catch (error) {
         console.error("Error fetching student profile:", error);
       }
@@ -182,6 +533,22 @@ const StudentMyProfile = () => {
   };
 
   const handleSave = async () => {
+    if (
+      !firstName ||
+      !lastName ||
+      !gender ||
+      !maritalStatus ||
+      !previousDanceEducation ||
+      !guruName ||
+      !phonePrimary ||
+      !emergencyContact ||
+      !imagePreview
+    ) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+
+    setLoading(true);
     try {
       const token = localStorage.getItem("authToken");
       if (!token) {
@@ -200,11 +567,15 @@ const StudentMyProfile = () => {
         emergencyContact,
       };
 
-      const response = await axios.put("http://localhost:5000/api/student/profile", updatedProfile, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.put(
+        "http://localhost:5000/api/student/profile",
+        updatedProfile,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       // Update the user context
       setUser({
@@ -220,27 +591,54 @@ const StudentMyProfile = () => {
         emergencyContact,
       });
 
-      alert("Profile updated successfully!");
-
+      toast.success("Profile updated successfully!");
     } catch (error) {
       console.error("Error saving profile:", error);
-      alert("Failed to update profile.");
+      toast.error("Failed to update profile.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="container mt-4">
+      {/* Toast Container */}
+      <ToastContainer />
+
       {/* Header Section */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h4>Personal Info</h4>
           <p className="text-muted">
-          "Update Your Personal Information ✏️ Keep Your Details Current and Accurate!"</p>
+            "Update Your Personal Information ✏️ Keep Your Details Current and
+            Accurate!"
+          </p>
         </div>
         <div>
           <button className="btn btn-outline-secondary me-2">Cancel</button>
-          <button className="btn btn-warning text-white" onClick={handleSave}>
-            Save
+
+          <button
+            className="btn"
+            onClick={handleSave}
+            style={{
+              backgroundColor: "#FFA800",
+              color: "#FFFFFF",
+            }}
+            onMouseEnter={(e) => (e.target.style.color = "#800000")}
+            onMouseLeave={(e) => (e.target.style.color = "white")}
+            disabled={loading}
+          >
+            {loading ? (
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+            ) : (
+              "Save"
+            )}
           </button>
         </div>
       </div>
@@ -249,7 +647,9 @@ const StudentMyProfile = () => {
       <form>
         {/* Name Input */}
         <div className="form-group row">
-          <label htmlFor="firstName" className="col-sm-2 col-form-label">First Name</label>
+          <label htmlFor="firstName" className="col-sm-2 col-form-label">
+            First Name
+          </label>
           <div className="col-sm-4">
             <input
               type="text"
@@ -259,9 +659,12 @@ const StudentMyProfile = () => {
               className="form-control"
               id="firstName"
               placeholder="First Name"
+              required
             />
           </div>
-          <label htmlFor="lastName" className="col-sm-2 col-form-label">Last Name</label>
+          <label htmlFor="lastName" className="col-sm-2 col-form-label">
+            Last Name
+          </label>
           <div className="col-sm-4">
             <input
               type="text"
@@ -271,6 +674,7 @@ const StudentMyProfile = () => {
               className="form-control"
               id="lastName"
               placeholder="Last Name"
+              required
             />
           </div>
         </div>
@@ -285,6 +689,7 @@ const StudentMyProfile = () => {
               name="gender"
               value={gender}
               onChange={(e) => setGender(e.target.value)}
+              required
             >
               <option value="">Choose...</option>
               <option value="Male">Male</option>
@@ -300,6 +705,7 @@ const StudentMyProfile = () => {
               name="maritalStatus"
               value={maritalStatus}
               onChange={(e) => setMaritalStatus(e.target.value)}
+              required
             >
               <option value="">Choose...</option>
               <option value="Married">Married</option>
@@ -311,7 +717,12 @@ const StudentMyProfile = () => {
 
         {/* Previous Dance Education and Guru Name */}
         <div className="form-group row">
-          <label htmlFor="previousDanceEducation" className="col-sm-2 col-form-label">Previous Dance Education</label>
+          <label
+            htmlFor="previousDanceEducation"
+            className="col-sm-2 col-form-label"
+          >
+            Previous Dance Education
+          </label>
           <div className="col-sm-10">
             <textarea
               className="form-control"
@@ -320,12 +731,15 @@ const StudentMyProfile = () => {
               onChange={(e) => setPreviousDanceEducation(e.target.value)}
               id="previousDanceEducation"
               placeholder="Previous Dance Education"
+              required
             />
           </div>
         </div>
 
         <div className="form-group row">
-          <label htmlFor="guruName" className="col-sm-2 col-form-label">Name and address of Guru</label>
+          <label htmlFor="guruName" className="col-sm-2 col-form-label">
+            Name and address of Guru
+          </label>
           <div className="col-sm-10">
             <textarea
               className="form-control"
@@ -334,13 +748,16 @@ const StudentMyProfile = () => {
               onChange={(e) => setGuruName(e.target.value)}
               id="guruName"
               placeholder="Name and address of Guru"
+              required
             />
           </div>
         </div>
 
         {/* Contact Information */}
         <div className="form-group row">
-          <label htmlFor="primaryPhone" className="col-sm-2 col-form-label">Phone Number (Primary)</label>
+          <label htmlFor="primaryPhone" className="col-sm-2 col-form-label">
+            Phone Number (Primary)
+          </label>
           <div className="col-sm-4">
             <input
               type="tel"
@@ -352,9 +769,12 @@ const StudentMyProfile = () => {
               placeholder="eg-(012-345-6789)"
               pattern="[0-9]{10}"
               maxLength="10"
+              required
             />
           </div>
-          <label htmlFor="emergencyContact" className="col-sm-2 col-form-label">Emergency Contact *</label>
+          <label htmlFor="emergencyContact" className="col-sm-2 col-form-label">
+            Emergency Contact *
+          </label>
           <div className="col-sm-4">
             <input
               type="tel"
@@ -373,18 +793,37 @@ const StudentMyProfile = () => {
 
         {/* Photo Upload Section */}
         <div className="mb-3 row align-items-center">
-          <label htmlFor="photo" className="col-sm-2 col-form-label">Your Photo</label>
+          <label htmlFor="photo" className="col-sm-2 col-form-label">
+            Your Photo
+          </label>
           <div className="col-sm-2 text-center">
-            <div className="rounded-circle border" style={{ width: "80px", height: "80px", overflow: "hidden", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <div
+              className="rounded-circle border"
+              style={{
+                width: "80px",
+                height: "80px",
+                overflow: "hidden",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               {imagePreview ? (
-                <img src={imagePreview} alt="Profile" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <img
+                  src={imagePreview}
+                  alt="Profile"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
               ) : (
                 <i className="bi bi-person" style={{ fontSize: "2rem" }}></i>
               )}
             </div>
           </div>
           <div className="col-sm-8">
-            <div className="border rounded p-4 text-center" style={{ backgroundColor: "#f9f9f9" }}>
+            <div
+              className="border rounded p-4 text-center"
+              style={{ backgroundColor: "#f9f9f9" }}
+            >
               <div className="input-group mb-3">
                 <input
                   type="file"
@@ -392,8 +831,11 @@ const StudentMyProfile = () => {
                   className="form-control"
                   id="photo"
                   onChange={handleImageUpload}
+                  required
                 />
-                <label className="input-group-text" htmlFor="photo">Upload</label>
+                <label className="input-group-text" htmlFor="photo">
+                  Upload
+                </label>
               </div>
             </div>
           </div>
